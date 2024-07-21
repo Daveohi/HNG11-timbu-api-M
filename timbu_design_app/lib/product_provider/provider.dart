@@ -15,6 +15,9 @@ class ProductProvider extends ChangeNotifier {
   List<String> _categories = [];
   List<String> get categories => _categories;
 
+  List<Product> _whitelistedProducts = [];
+  List<Product> get whitelistedProducts => _whitelistedProducts;
+
   Future<void> fetchProducts() async {
     _isLoading = true;
     notifyListeners();
@@ -52,13 +55,6 @@ class ProductProvider extends ChangeNotifier {
           .toList();
       _isLoading = false;
       notifyListeners();
-      // _products = productList
-      //     .map((item) => Product.fromJson(item))
-      //     .where((product) =>
-      //         product.categories.any((category) == category.toLowerCase()))
-      //     .toList();
-      _isLoading = false;
-      notifyListeners();
     } catch (error) {
       _isLoading = false;
       notifyListeners();
@@ -66,15 +62,16 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  // List<Product> get whitelistedProducts {
-  //   return _products.where((product) => product.isWhitelisted).toList();
-  // }
+  void toggleWishlist(Product product) {
+    if (_whitelistedProducts.contains(product)) {
+      _whitelistedProducts.remove(product);
+    } else {
+      _whitelistedProducts.add(product);
+    }
+    notifyListeners();
+  }
 
-  // void toggleWishlistStatus(String productId) {
-  //   final index = _products.indexWhere((product) => product.uid == productId);
-  //   if (index >= 0) {
-  //     _products[index].isWhitelisted = !_products[index].isWhitelisted;
-  //     notifyListeners();
-  //   }
-  // }
+  bool isWhitelisted(Product product) {
+    return _whitelistedProducts.contains(product);
+  }
 }

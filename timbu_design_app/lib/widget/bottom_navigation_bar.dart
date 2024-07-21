@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timbu_design_app/screens/order_page.dart';
 import '../screens/account_page.dart';
 import '../screens/storepage.dart';
+import '../screens/wish_list_page.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -19,10 +20,10 @@ class CustomBottomNavBar extends StatelessWidget {
         );
         break;
       case 1:
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const WhitelistPage()),
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const WishlistPage()),
+        );
         break;
       case 2:
         Navigator.pushReplacement(
@@ -61,16 +62,20 @@ class CustomBottomNavBar extends StatelessWidget {
             'assets/liked.png',
             width: 24,
             height: 24,
-            color: currentIndex == 1 ? Colors.green : Colors.grey,
+            color: currentIndex == 1
+                ? const Color.fromARGB(255, 35, 122, 42)
+                : Colors.grey,
           ),
-          label: 'Liked',
+          label: 'WishList',
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
             'assets/orders.png',
             width: 24,
             height: 24,
-            color: currentIndex == 2 ? Colors.green : Colors.grey,
+            color: currentIndex == 2
+                ? const Color.fromARGB(255, 35, 122, 42)
+                : Colors.grey,
           ),
           label: 'Orders',
         ),
@@ -79,7 +84,9 @@ class CustomBottomNavBar extends StatelessWidget {
             'assets/account.png',
             width: 24,
             height: 24,
-            color: currentIndex == 3 ? Colors.green : Colors.grey,
+            color: currentIndex == 3
+                ? const Color.fromARGB(255, 35, 122, 42)
+                : Colors.grey,
           ),
           label: 'Account',
         ),
