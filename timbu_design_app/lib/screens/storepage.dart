@@ -30,7 +30,7 @@ class _StorePageState extends State<StorePage> {
 
   @override
   Widget build(BuildContext context) {
-     final productProvider = Provider.of<ProductProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(context);
     final cart = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -131,19 +131,26 @@ class _StorePageState extends State<StorePage> {
       body: productProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-                'assets/hero-image.png'), // Replace with your banner image
-            const ProductSection(
-              title: 'New Arrivals', products: [],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                      'assets/hero-image.png'), // Replace with your banner image
+                  const ProductSection(
+                    title: 'New Arrivals',
+                    products: [],
+                  ),
+                  const ProductSection(
+                    title: 'Top Sellers',
+                    products: [],
+                  ),
+                  const ProductSection(
+                    title: 'More of what you like',
+                    products: [],
+                  ),
+                ],
+              ),
             ),
-            const ProductSection(title: 'Top Sellers', products: [],),
-            const ProductSection(title: 'More of what you like', products: [],),
-          ],
-        ),
-      ),
       bottomNavigationBar: const CustomBottomNavBar(currentIndex: 0),
     );
   }
@@ -153,7 +160,8 @@ class ProductSection extends StatelessWidget {
   final String title;
   final List<Product> products;
 
-  const ProductSection({super.key, required this.title, required this.products});
+  const ProductSection(
+      {super.key, required this.title, required this.products});
 
   @override
   Widget build(BuildContext context) {
@@ -272,12 +280,27 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context, listen: false);
+    final productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
         cart.addItem(product);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${product.name} added to cart'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      onLongPress: () {
+        productProvider.toggleWishlist(product);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              productProvider.isWhitelisted(product)
+                  ? '${product.name} added to wishlist'
+                  : '${product.name} removed from wishlist',
+            ),
             duration: const Duration(seconds: 2),
           ),
         );
@@ -301,7 +324,6 @@ class ProductCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text('N${product.currentPrice}',
-                // Text('${product.currency}${product.currentPrice[0]}',
                 style: const TextStyle(
                     fontWeight: FontWeight.bold, color: Color(0xFF067928))),
             Text(

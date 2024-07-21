@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../database/data_base_helper.dart';
+import '../models/orders.dart';
 import '../models/product.dart';
 
 class CartProvider extends ChangeNotifier {
@@ -60,6 +62,31 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+// Future<void> completeOrder() async {
+//     final newOrders = items
+//         .map((item) => Order(
+//               id: DateTime.now().millisecondsSinceEpoch.toString(),
+//               product: item.product,
+//               quantity: item.quantity,
+//               status: OrderStatus.completed,
+//               orderDate: DateTime.now(),
+//             ))
+//         .toList();
+
+//     for (var order in newOrders) {
+//       await DatabaseHelper.instance.insertOrder(order);
+//     }
+
+//     clearCart();
+//     notifyListeners();
+//   }
+
+  void completeOrder() {
+    // Here you would typically save the order to a database
+    // For now, we'll just clear the cart
+    clearCart();
+    notifyListeners();
+  }
   
 }
 
